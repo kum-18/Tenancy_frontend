@@ -1,0 +1,108 @@
+.monthly-details-page {
+  padding: 24px;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+}
+
+.table-wrap {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background: #fff;
+  min-height: 160px;
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 2;
+}
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 50px 20px;
+  color: #6b7280;
+  font-size: 14px;
+
+  &.error {
+    color: #dc2626;
+  }
+
+  &.empty {
+    color: #9ca3af;
+  }
+}
+
+.monthly-table {
+  width: 100%;
+
+  th.mat-mdc-header-cell {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #6b7280;
+    background: #f9fafb;
+  }
+
+  td.mat-mdc-cell {
+    font-size: 14px;
+    color: #111827;
+  }
+}
+
+.data-row {
+  cursor: pointer;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.balance-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.settled {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  &.due {
+    background: #fef3c7;
+    color: #b45309;
+  }
+}
+
+mat-paginator {
+  border-top: 1px solid #e5e7eb;
+}

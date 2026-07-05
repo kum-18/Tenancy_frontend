@@ -1,0 +1,77 @@
+<div class="tenants-page">
+  <header class="page-header">
+    <h1>Tenants</h1>
+    <button mat-flat-button color="primary" (click)="openAddTenantDialog()">
+      <mat-icon>add</mat-icon>
+      Add Tenant
+    </button>
+  </header>
+
+  <div class="state-block" *ngIf="loading">
+    <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
+    <p>Loading tenants…</p>
+  </div>
+
+  <div class="state-block error" *ngIf="!loading && errorMessage">
+    <p>{{ errorMessage }}</p>
+    <button mat-stroked-button (click)="loadTenants()">Retry</button>
+  </div>
+
+  <div class="state-block empty" *ngIf="!loading && !errorMessage && tenants.length === 0">
+    <p>No tenants yet. Add your first tenant to get started.</p>
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading && !errorMessage && tenants.length > 0">
+    <table mat-table [dataSource]="tenants" class="tenants-table">
+
+      <ng-container matColumnDef="tenantName">
+        <th mat-header-cell *matHeaderCellDef>Tenant Name</th>
+        <td mat-cell *matCellDef="let t">{{ t.tenantName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="propertyName">
+        <th mat-header-cell *matHeaderCellDef>Property</th>
+        <td mat-cell *matCellDef="let t">{{ t.propertyName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rentType">
+        <th mat-header-cell *matHeaderCellDef>Rent Type</th>
+        <td mat-cell *matCellDef="let t">{{ t.rentType }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="shopName">
+        <th mat-header-cell *matHeaderCellDef>Shop Name</th>
+        <td mat-cell *matCellDef="let t">{{ t.shopName || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef>Start Date</th>
+        <td mat-cell *matCellDef="let t">{{ t.startDate | date: 'mediumDate' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let t">
+          {{ t.endDate ? (t.endDate | date: 'mediumDate') : '—' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let t">
+          <span class="status-pill" [class.active]="t.isActive" [class.inactive]="!t.isActive">
+            {{ t.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        class="tenant-row"
+        (click)="onRowClick(row)"
+      ></tr>
+    </table>
+  </div>
+</div>

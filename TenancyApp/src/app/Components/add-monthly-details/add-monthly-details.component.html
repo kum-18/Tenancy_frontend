@@ -1,0 +1,121 @@
+<div class="add-monthly-details-page">
+  <header class="page-header">
+    <h1>Add Monthly Details</h1>
+  </header>
+
+  <div class="tenant-load-error" *ngIf="tenantLoadError">
+    <p>{{ tenantLoadError }}</p>
+    <button mat-stroked-button (click)="loadTenants()">Retry</button>
+  </div>
+
+  <mat-tab-group animationDuration="150ms" *ngIf="!tenantLoadError">
+
+    <!-- TAB 1: Record Payment -->
+    <mat-tab label="Record Payment">
+      <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="tab-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tenant</mat-label>
+          <mat-select formControlName="tenantId">
+            <mat-option *ngIf="loadingTenants" disabled>Loading tenants…</mat-option>
+            <mat-option *ngFor="let t of tenants" [value]="t.id">
+              {{ t.tenantName }} ({{ t.rentType }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="paymentForm.get('tenantId')?.hasError('required')">
+            Tenant is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Amount Paid</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="amountPaid"
+            placeholder="e.g. 15000"
+          />
+          <span matTextPrefix>₹&nbsp;</span>
+          <mat-error *ngIf="paymentForm.get('amountPaid')?.hasError('required')">
+            Amount is required
+          </mat-error>
+          <mat-error *ngIf="paymentForm.get('amountPaid')?.hasError('min')">
+            Amount must be greater than 0
+          </mat-error>
+        </mat-form-field>
+
+        <p class="error-text" *ngIf="paymentError">{{ paymentError }}</p>
+
+        <div class="actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="submittingPayment"
+          >
+            <span *ngIf="!submittingPayment">Record Payment</span>
+            <mat-progress-spinner
+              *ngIf="submittingPayment"
+              diameter="20"
+              mode="indeterminate"
+            ></mat-progress-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+
+    <!-- TAB 2: Generate Monthly Bill -->
+    <mat-tab label="Generate Bill">
+      <form [formGroup]="billForm" (ngSubmit)="submitBill()" class="tab-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tenant</mat-label>
+          <mat-select formControlName="tenantId">
+            <mat-option *ngIf="loadingTenants" disabled>Loading tenants…</mat-option>
+            <mat-option *ngFor="let t of tenants" [value]="t.id">
+              {{ t.tenantName }} ({{ t.rentType }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="billForm.get('tenantId')?.hasError('required')">
+            Tenant is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Current Month Reading</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="newReading"
+            placeholder="e.g. 1245"
+          />
+          <mat-error *ngIf="billForm.get('newReading')?.hasError('required')">
+            Reading is required
+          </mat-error>
+          <mat-error *ngIf="billForm.get('newReading')?.hasError('min')">
+            Reading cannot be negative
+          </mat-error>
+        </mat-form-field>
+
+        <p class="error-text" *ngIf="billError">{{ billError }}</p>
+
+        <div class="actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="submittingBill"
+          >
+            <span *ngIf="!submittingBill">Generate Bill</span>
+            <mat-progress-spinner
+              *ngIf="submittingBill"
+              diameter="20"
+              mode="indeterminate"
+            ></mat-progress-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

@@ -1,0 +1,81 @@
+<div class="monthly-details-page">
+  <header class="page-header">
+    <h1>Monthly Details</h1>
+  </header>
+
+  <div class="table-wrap">
+    <div class="loading-overlay" *ngIf="loading">
+      <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <div class="state-block error" *ngIf="!loading && errorMessage">
+      <p>{{ errorMessage }}</p>
+      <button mat-stroked-button (click)="onRetry()">Retry</button>
+    </div>
+
+    <div class="state-block empty" *ngIf="!loading && !errorMessage && data.length === 0">
+      <p>No monthly details found.</p>
+    </div>
+
+    <table
+      mat-table
+      [dataSource]="data"
+      matSort
+      matSortActive="billingMonth"
+      matSortDirection="desc"
+      matSortDisableClear
+      class="monthly-table"
+      *ngIf="!errorMessage && (data.length > 0 || loading)"
+    >
+
+      <ng-container matColumnDef="billingMonth">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Billing Month</th>
+        <td mat-cell *matCellDef="let row">{{ row.billingMonth | date: 'MMMM yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="propertyName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Property</th>
+        <td mat-cell *matCellDef="let row">{{ row.propertyName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalMonthlyRent">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Rent</th>
+        <td mat-cell *matCellDef="let row">{{ row.totalMonthlyRent | currency: 'INR' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amountPaid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</th>
+        <td mat-cell *matCellDef="let row">{{ row.amountPaid | currency: 'INR' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef>Balance</th>
+        <td mat-cell *matCellDef="let row">
+          <span
+            class="balance-pill"
+            [class.settled]="row.totalMonthlyRent - row.amountPaid <= 0"
+            [class.due]="row.totalMonthlyRent - row.amountPaid > 0"
+          >
+            {{ row.totalMonthlyRent - row.amountPaid | currency: 'INR' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        class="data-row"
+        (click)="onRowClick(row)"
+      ></tr>
+    </table>
+
+    <mat-paginator
+      *ngIf="!errorMessage"
+      [length]="totalCount"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageSize]="pageSizeOptions[0]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

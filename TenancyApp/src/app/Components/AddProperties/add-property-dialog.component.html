@@ -1,0 +1,108 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="dialog-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+           width="18" height="18">
+        <path d="M12 2.1L1 10h3v11h7v-6h2v6h7V10h3L12 2.1z"/>
+      </svg>
+    </div>
+    <div>
+      <h2 mat-dialog-title class="dialog-title">Add Property</h2>
+      <p class="dialog-subtitle">Fill in the details below to add a new property.</p>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" id="addPropertyForm" autocomplete="off">
+
+      <!-- ── Core Fields ── -->
+      <div class="section-label">Basic Information <span class="required-note">* required</span></div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Property Name</mat-label>
+        <input matInput formControlName="propertyName" placeholder="e.g. Sunrise Apartments Block A" />
+        <mat-error *ngIf="form.get('propertyName')?.hasError('required')">Property name is required</mat-error>
+        <mat-error *ngIf="form.get('propertyName')?.hasError('minlength')">Minimum 2 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Address</mat-label>
+        <textarea matInput formControlName="address" rows="2"
+                  placeholder="e.g. 42, MG Road, Bengaluru, Karnataka 560001"></textarea>
+        <mat-error *ngIf="form.get('address')?.hasError('required')">Address is required</mat-error>
+        <mat-error *ngIf="form.get('address')?.hasError('minlength')">Minimum 5 characters</mat-error>
+      </mat-form-field>
+
+      <div class="row-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Base Rent (₹)</mat-label>
+          <input matInput type="number" formControlName="baseRent" min="0" placeholder="0" />
+          <mat-error *ngIf="form.get('baseRent')?.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="form.get('baseRent')?.hasError('min')">Must be ≥ 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Current Price (₹)</mat-label>
+          <input matInput type="number" formControlName="baseCurrentPrice" min="0" placeholder="0" />
+          <mat-error *ngIf="form.get('baseCurrentPrice')?.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="form.get('baseCurrentPrice')?.hasError('min')">Must be ≥ 0</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- ── Dimensions (optional) ── -->
+      <mat-divider class="section-divider"></mat-divider>
+      <div class="section-label">
+        Dimensions
+        <span class="optional-badge">Optional</span>
+      </div>
+
+      <div class="row-3">
+        <mat-form-field appearance="outline">
+          <mat-label>Length</mat-label>
+          <input matInput type="number" formControlName="lengthValue" min="0" placeholder="0" />
+          <mat-error *ngIf="form.get('lengthValue')?.hasError('min')">Must be ≥ 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Width</mat-label>
+          <input matInput type="number" formControlName="widthValue" min="0" placeholder="0" />
+          <mat-error *ngIf="form.get('widthValue')?.hasError('min')">Must be ≥ 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Unit</mat-label>
+          <mat-select formControlName="unit">
+            <mat-option *ngFor="let u of units" [value]="u">{{ u }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Error Banner -->
+      <div class="error-banner" *ngIf="errorMessage">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" width="16" height="16">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+        </svg>
+        {{ errorMessage }}
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <!-- Actions -->
+  <mat-dialog-actions class="dialog-actions">
+    <button class="btn-cancel" (click)="onCancel()" [disabled]="loading">Cancel</button>
+    <button class="btn-submit" type="submit" form="addPropertyForm"
+            (click)="onSubmit()" [disabled]="loading">
+      <mat-spinner *ngIf="loading" diameter="16" class="btn-spinner"></mat-spinner>
+      <span>{{ loading ? 'Adding…' : 'Add Property' }}</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

@@ -1,0 +1,42 @@
+<nav class="app-nav">
+  <!-- Logo / Brand (sidebar only) -->
+  <div class="nav-brand">
+    <div class="brand-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+        <path d="M12 2L2 8.5V21h8v-5h4v5h8V8.5L12 2z"/>
+      </svg>
+    </div>
+    <span class="brand-name">TenantPro</span>
+  </div>
+
+  <!-- Nav Items -->
+  <ul class="nav-list">
+    <li *ngFor="let item of navItems" class="nav-item">
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/add-monthly-details' ? true : false }"
+        class="nav-link"
+        [attr.aria-label]="item.label"
+      >
+        <span class="nav-icon inactive-icon" [innerHTML]="item.icon"></span>
+        <span class="nav-icon active-icon" [innerHTML]=" item.activeIcon ?? item.icon"></span>
+        <span class="nav-label">{{ item.label }}</span>
+        <span class="active-dot"></span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Bottom section (sidebar only) -->
+  <div class="nav-footer">
+    <a class="nav-link settings-link" aria-label="Settings">
+      <span class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </span>
+      <span class="nav-label">Settings</span>
+    </a>
+  </div>
+</nav>

@@ -1,0 +1,46 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 420px;
+  padding-top: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+
+  .half-width {
+    flex: 1;
+  }
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+mat-dialog-actions {
+  padding: 12px;
+}
+
+button[type='submit'] mat-progress-spinner {
+  display: inline-block;
+  ::ng-deep circle {
+    stroke: #fff;
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog-content {
+    min-width: 0;
+  }
+  .row {
+    flex-direction: column;
+  }
+}

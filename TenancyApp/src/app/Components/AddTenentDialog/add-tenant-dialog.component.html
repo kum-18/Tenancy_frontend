@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>Add Tenant</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="dialog-content">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Property</mat-label>
+      <mat-select formControlName="propertyId">
+        <mat-option *ngIf="loadingProperties" disabled>Loading properties…</mat-option>
+        <mat-option *ngFor="let p of properties" [value]="p.guid">
+          {{ p.propertyName }} — {{ p.address }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('propertyId')?.hasError('required')">
+        Property is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tenant Name</mat-label>
+      <input matInput formControlName="tenantName" placeholder="e.g. Ravi Kumar" />
+      <mat-error *ngIf="form.get('tenantName')?.hasError('required')">
+        Tenant name is required
+      </mat-error>
+      <mat-error *ngIf="form.get('tenantName')?.hasError('minlength')">
+        Name is too short
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Proof Number</mat-label>
+      <input matInput formControlName="proofNumber" placeholder="e.g. Aadhaar / PAN number" />
+      <mat-error *ngIf="form.get('proofNumber')?.hasError('required')">
+        Proof number is required
+      </mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Rent Type</mat-label>
+        <mat-select formControlName="rentType">
+          <mat-option *ngFor="let type of rentTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('rentType')?.hasError('required')">
+          Rent type is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="startDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('startDate')?.hasError('required')">
+          Start date is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Shop Name (optional)</mat-label>
+      <input matInput formControlName="shopName" placeholder="e.g. Sai Stores" />
+    </mat-form-field>
+
+    <p class="error-text" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">Add Tenant</span>
+      <mat-progress-spinner
+        *ngIf="loading"
+        diameter="20"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,98 @@
+<div class="properties-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Properties</h1>
+      <p class="page-subtitle">Manage your rental properties</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add Property
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="state-wrapper" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="state-label">Loading properties…</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="state-wrapper error-state" *ngIf="!loading && errorMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.8" width="40" height="40" class="state-icon error-icon">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+    </svg>
+    <p class="state-label">{{ errorMessage }}</p>
+    <button class="retry-btn" (click)="loadProperties()">Try again</button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="state-wrapper" *ngIf="!loading && !errorMessage && properties.length === 0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.5" width="48" height="48" class="state-icon empty-icon">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+      <path d="M9 21V12h6v9"/>
+    </svg>
+    <p class="state-label">No properties yet</p>
+    <p class="state-sublabel">Add your first property to get started.</p>
+    <button class="add-btn" (click)="openAddDialog()">Add Property</button>
+  </div>
+
+  <!-- Properties Grid -->
+  <div class="properties-grid" *ngIf="!loading && !errorMessage && properties.length > 0">
+    <div
+      class="property-card"
+      *ngFor="let property of properties"
+      (click)="navigateToProperty(property.guid)"
+      (keydown.enter)="navigateToProperty(property.guid)"
+      tabindex="0"
+      role="button"
+      [attr.aria-label]="'View details for ' + property.propertyName"
+    >
+      <!-- Card Icon -->
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+             width="20" height="20">
+          <path d="M12 2.1L1 10h3v11h7v-6h2v6h7V10h3L12 2.1z"/>
+        </svg>
+      </div>
+
+      <!-- Property Name -->
+      <h2 class="card-name">{{ property.propertyName }}</h2>
+
+      <!-- Address -->
+      <p class="card-address">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+             stroke-linejoin="round" width="13" height="13">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        {{ property.address }}
+      </p>
+
+      <!-- Divider -->
+      <div class="card-divider"></div>
+
+      <!-- Base Rent -->
+      <div class="card-rent">
+        <span class="rent-label">Base Rent</span>
+        <span class="rent-value">₹{{ property.baseRent | number }}</span>
+      </div>
+
+      <!-- Chevron -->
+      <div class="card-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" width="16" height="16">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div>
